@@ -1,0 +1,45 @@
+# AWX Install Centos 8
+
+# Add Additional Repos
+dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+dnf-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+# Installl needed packages
+dnf install ansible git 
+dnf python3-pip --nobest
+ 
+# Start and enable Docker
+systemctl start docker
+systemctl enable docker
+  
+# Clone AWX from github
+git clone https://github.com/ansible/awx.git
+cd awx
+clone https://github.com/ansible/awx-logos.git
+
+# Create symbolic links
+ln -s python3 python
+ln -s pip3 pip
+
+# Install needed Python modules
+pip install docker
+pip install docker-compose
+
+# Run Installer
+cd installer/
+ansible-playbook -i inventory install.yml -vv
+ 
+# List status of docker containers
+docker container ls
+
+# Set Ipv6 redirection if needed
+vim /etc/sysctl.d/ipv6.conf
+net.ipv6.conf.all.forwarding=1
+
+# Web login - hostname port 80
+admin
+password
+ 
+
+  
+ 
