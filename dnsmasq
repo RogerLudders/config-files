@@ -1,0 +1,22 @@
+#no-dhcp-interface=eth0
+log-dhcp
+log-queries
+bogus-priv
+expand-hosts
+domain-needed
+no-resolv
+no-poll
+domain=luddnet.int
+local=/luddnet.int/
+server=8.8.8.8
+server=8.8.4.4
+
+# DHCP Range
+dhcp-option=3,192.168.0.1
+dhcp-option=6,192.168.0.10,192.168.0.20
+dhcp-range=192.168.0.200,192.168.0.254,48h
+dhcp-lease-max=48
+
+# DHCP Reserve
+dhcp-host=00:18:dd:06:56:6b,192.168.0.200,HDHomeRun
+dhcp-host=fc-77-74-65-15-99,192.168.0.210,BladeStealth
