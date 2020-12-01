@@ -1,0 +1,35 @@
+#NGNIX
+https://medium.com/@_vitaliy/udp-load-balancing-by-nginx-for-your-syslog-881a18cd4363
+
+root@plissysloglb1:~# cat /etc/nginx/nginx.conf
+
+# loading stream module
+load_module /usr/lib64/nginx/modules/ngx_stream_module.so; 
+user nginx;
+worker_processes auto;
+worker_rlimit_nofile 30000;
+error_log /var/log/nginx/error.log;
+pid /run/nginx.pid;
+events {
+      #worker_connections can't be less then your EPS(events per second)
+      worker_connections 15000;
+}
+stream {
+   upstream syslog_servers {
+      server 10.154.109.171:514;
+      server 10.154.109.172:514;
+   }
+   server {
+      listen           514 udp;
+      listen           514;
+      proxy_pass       syslog_servers;
+      #proxy_response important for performance 
+      proxy_responses  0; 
+   }
+}
+
+
+
+
+
+#https://serverfault.com/questions/598202/make-nginx-to-pass-hostname-of-the-upstream-when-reverseproxying
